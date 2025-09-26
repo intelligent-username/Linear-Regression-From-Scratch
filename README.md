@@ -8,4 +8,4 @@ Building linear regression from scratch helps deepen your understanding of the m
 
 In progress
 
-This will likely take a while.
+Took a while to gget started but will finish soon.
