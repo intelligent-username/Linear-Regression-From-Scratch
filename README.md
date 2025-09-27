@@ -1,11 +1,223 @@
 # Linear Regression From Scratch
 
-Linear regression is a fundamental statistical method used to model the relationship between a dependent variable (like house prices) and one or more independent variables (like size or location). It assumes a linear relationship, fitting a straight line to the data points that best predicts the outcome. It's simple, interpretable, and widely used in fields like economics, biology, and machine learning for prediction and inference.
+Linear regression fits a straight line to the data points that best predicts an outcome.
 
-## Why Implement from Scratch?
+---
 
-Building linear regression from scratch helps deepen your understanding of the math behind it—think gradient descent, least squares, and optimization algorithms. Implementing it can help us understand what is going on under the hood and tweak/re-implement the algorithm when there are errors. Plus, it's satisfying to see how the pieces fit together, and it gives you full control over the implementation for custom tweaks or educational purposes.
+## The Math Behind Linear Regression
+
+### The Simple Idea
+
+Say you have $n$ points $(x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)$ with $n \geq 2$. The goal is to find the line that best "fits" these points. By 'best fit', we mean the line that most accurately predicts a $y$ value from some given $x$ value. This is calculated using a loss function, in this case, I will be using Mean Squared Error (**MSE**). By minimizing error, we maximize accuracy. The sum of squared residuals (errors), our loss function, finds the mean squared error by using the formula:
+
+$$
+MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+$$
+
+Where:
+
+- $y_i$ is the actual value from our data.
+- $\hat{y}_i$ is the predicted value from our linear model.
+- Each term $(y_i - \hat{y}_i)^2$ is the squared difference between the actual and predicted values. We square this difference to ensure that positive and negative differences don't cancel each other out.
+
+We divide by $n$, the number of points, to get the mean of the residuals. This is just the same as calculating the variance of the residuals.
+
+\* Note: When doing statistics, if we're only taking a sample and not the whole population, we would divide by $n-1$ instead. This is to correct for the added bias. For more, read on [Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction). In Loss Functions, we just divide by $n$.
+
+$$\hat{y}_i = \beta_0 + \beta_1 x$$
+
+is the formula for the predicted $\hat{y}_i$, with $\beta_1$ being the slope and $\beta_0$ being the intercept of the graph.
+
+Finding the optimal values of $\beta_1$ and $\beta_0$ is the goal of linear regression.
+
+Now, in the simple case, we have a manageable finite number of points, through which we can draw a line. Our parameters $\beta_1$ and $\beta_0$ can be easily calculated:
+
+$$
+\beta_1 = \frac{\sum_{i=1}^{n}(x_i - \overline{x}) \times (y_i - \overline{y})}{\sum_{i=1}^{n}(x_i - \overline{x})^2}
+$$
+
+Here, we divide the covariance of $x$ and $y$ by the variance of $x$ to find $\beta_1$. For more on how this formula is derived, see the case in 3D.
+
+Then, we find $\beta_0$ with the formula:
+
+$$
+\beta_0 = \overline{y} - \beta_1\overline{x}
+$$
+
+\*Note: Setting the y-intercept this way ensures the line crosses the mean of $y$.
+
+Where:
+
+- $\overline{x}$ is the average value for x
+- $\overline{y}$ is the average value for y
+- $x_i$ is the observed value of x at that point
+- $y_i$ is the observed value of y at that point
+
+This is for the case where our points are in 2D.
+
+There are two more cases to consider in simple linear regression:
+
+- When we have points in higher dimensions (more than one feature)
+- When we have a very large number of points (we cannot feasibly calculate the sums)
+
+---
+
+### 3D & Higher Dimensions (The General Case)
+
+</br>
+
+#### 3-Dimensional Formula
+
+In 3D, we are plotting the points $(x,y,z)$. The formula for the line is now:
+
+$$
+z = \beta_0 + \beta_1 x + \beta_2 y
+$$
+
+This is the same as the 2D formula, just with an extra variable to account for the new dimension.
+
+Now, the loss function is the same, just with $z$ instead of $y$ for clarity:
+
+$$
+\begin{align*}
+MSE = L(\beta_0, \beta_1, \beta_2) &= \frac{1}{n} \sum_{i=1}^{n} (z_i - \hat{z}_i)^2 \\
+&= \frac{1}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i))^2
+\end{align*}
+$$
+
+Once again, $\hat{z}_i$ is the predicted value from our linear model, and, for each prediction, we calculated the MSE and try to minimize it.
+
+To find $\beta_0$, $\beta_1$, and $\beta_2$, we take the partial derivatives of the loss function, $L$, with respect to each parameter and set the partial derivatives to zero. We do this to find the global minimum of the loss function.
+
+\*Note: Since the loss function is a quadratic with a non-negative leading coefficient ($n\geq2$), it's guaranteed to have a single local minimum, which is also the global minimum.
+
+Now, we have:
+
+$$
+\nabla L = \begin{pmatrix}
+\frac{\partial L}{\partial \beta_0} \\
+\frac{\partial L}{\partial \beta_1} \\
+\frac{\partial L}{\partial \beta_2}
+\end{pmatrix}
+$$
+
+with
+
+$$
+\begin{align*}
+\frac{\partial L}{\partial \beta_0} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-1) \\
+&= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i))
+\end{align*}
+$$
+
+Similarly,
+
+$$
+\begin{align*}
+\frac{\partial L}{\partial \beta_1} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-x_i) \\
+&= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) x_i
+\end{align*}
+$$
+
+$$
+\begin{align*}
+\frac{\partial L}{\partial \beta_2} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-y_i) \\
+&= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) y_i
+\end{align*}
+$$
+
+Now, equating to 0 (for the minimum):
+
+$$
+\frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0 \\
+\Rightarrow \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0 \\
+\Rightarrow \sum_{i=1}^{n} z_i = \sum_{i=1}^{n} (\beta_0 + \beta_1 x_i + \beta_2 y_i) \\
+\\
+\Rightarrow \sum_{i=1}^{n} z_i = n\beta_0 + \beta_1\sum_{i=1}^{n} x_i +  \beta_2\sum_{i=1}^{n} y_i
+$$
+
+Similarly, we have:
+
+$$
+\sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) x_i = 0 \\
+\Rightarrow \sum_{i=1}^{n} z_i x_i = \sum_{i=1}^{n} (\beta_0 x_i + \beta_1 x_i^2 + \beta_2 y_i x_i) \\
+\Rightarrow \sum_{i=1}^{n} z_i x_i = \beta_0 \sum_{i=1}^{n} x_i + \beta_1 \sum_{i=1}^{n} x_i^2 + \beta_2 \sum_{i=1}^{n} x_i y_i
+$$
+
+and
+
+$$
+\sum_{i=1}^{n} z_i y_i = \beta_0\sum_{i=1}^{n} (y_i) + \beta_1 \sum_{i=1}^{n} (x_i y_i) + \beta_2 \sum_{i=1}^{n} (y_i^2)
+$$
+
+By solving this system of equations, we can find the optimal values for $\beta_0$, $\beta_1$, and $\beta_2$ that minimize the loss function.
+
+For conciseness, this system is often represented in matrix form, with normal equations:
+
+$$
+\mathbf{X}\vec{\beta} = \vec{z}
+$$
+
+with
+
+$$
+\mathbf{X} = \sum_{i=1}^{n} \begin{pmatrix}
+n & x_i & y_i \\
+x_i & x_i^2 & x_i y_i \\
+y_i & x_i y_i & y_i^2
+\end{pmatrix}, \
+\vec{\beta} = \begin{pmatrix}
+\beta_0 \\
+\beta_1 \\
+\beta_2
+\end{pmatrix}, \
+\vec{z} = \sum_{i=1}^{n} \begin{pmatrix}
+z_i \\
+z_i x_i \\
+z_i y_i
+\end{pmatrix}.
+$$
+
+Provided $\mathbf{X}$ is invertible (that is, the predictors $x$ and $y$ are not collinear), the unique solution is:
+
+$$
+\vec{\beta} = \mathbf{X}^{-1} \vec{z}.
+$$
+
+The vector $\vec{\beta}$ gives the intercept $\beta_0$ and slopes $\beta_1,\beta_2$ of the best-fitting plane:
+
+$$
+\hat{z} = \beta_0 + \beta_1 x + \beta_2 y.
+$$
+
+\*Note: In more conventional notation, the system of equations derived above is written compactly using matrix transposes as:
+
+\[
+X^\top X\,\beta = X^\top z,
+\]
+
+where \(X\) is the design matrix containing the predictors and a column of ones for the intercept, and \(z\) is the vector of observed outputs. This is called the normal equation for ordinary least squares. Solving it yields the closed‑form solution:
+
+\[
+\beta = (X^\top X)^{-1}X^\top z.
+\]
+
+This matrix form is equivalent to the expanded system above; the transposes arise naturally when taking derivatives of the loss function, and this form generalizes directly to any number of predictors.
+
+This procedure generalizes to give the:
+
+#### $n$-dimensional Form
+
+$$
+\vec{\beta} = (X^\top X)^{-1} X^\top \vec{y},
+$$
+
+---
+
+</br>
+
+### Infeasibly Large Number of Points (Computational Case)
 
 In progress
 
-Took a while to gget started but will finish soon.
+Took a while to get started but will finish soon.

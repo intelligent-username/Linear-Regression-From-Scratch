@@ -1,11 +1,11 @@
 # Naive implementation for simple amount of points for now
 # Small number of points and only (x,y)
 
-def linear_regression(points: list[tuple[int, int]]):
+def linear_regression(points: list[tuple[float, float]]):
     """
     Performs simple linear regression using the least squares method.
     
-    Args:
+    Preconditions:
         points: List of (x, y) coordinate tuples representing data points
         
     Returns:
@@ -16,7 +16,9 @@ def linear_regression(points: list[tuple[int, int]]):
         ValueError: If fewer than 2 points are provided
         
     Note:
-        This is a basic implementation that will be enhanced soon
+        This is a basic implementation that will be enhanced soon:
+          - Gradient Descent will be added
+          - And other optimization techniques
     """
     if len(points) < 2:
         raise ValueError("At least 2 points are required for linear regression")
