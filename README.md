@@ -212,12 +212,41 @@ $$
 \vec{\beta} = (X^\top X)^{-1} X^\top \vec{y},
 $$
 
+The math and procedure behind this is exactly the same as three (and two) dimensions, just more generalized.
+
+To review:
+
+1) Define a loss function.
+2) Find the gradient of the loss function.
+3) Set this gradient to zero and rearrange to form a system of equations.
+4) Write this system in matrix form.
+5) Substitute the points to solve for the parameters.
+
+Now that we understand the math behind this, we can start to always skip to step 5 (immediately plug in the points), assuming we always use the same Loss Function.
+
+This method fails when:
+
+- There is no correlation between the variables (obviously).
+- There are more parameters than points (for example when there are 5 features but only 3 points).
+- The features are linearly dependent (collinear).
+
+Conversely, if we have:
+
+- More points than parameters
+- No collinearity
+- Some correlation
+
+Linear regression can always produce a line of best fit in theory.
+
+However, in practice, there are still some issues.
+
+- The relationship isn't linear. This calls for **polynomial regression** to be used instead.
+- Overfitting: the model may capture noise instead of the underlying trend. This can be mitigated with regularization and other **complexity control techniques**.
+- Unrealistic assumptions: linear regression assumes homoscedasticity (constant variance of errors) and normality of errors, which may not hold in real-world data. This can be solved by using **Generalized Least Squares** methods.
+- Infeasible number of points: when there are too many points, calculating the sums becomes too costly. This calls for more estimative methods like **Gradient Descent** and its variations.
+
 ---
 
-</br>
+🚧In progress:
 
-### Infeasibly Large Number of Points (Computational Case)
-
-In progress
-
-Took a while to get started but will finish soon.
+The writeup is done. The only thing that's left is the code.
