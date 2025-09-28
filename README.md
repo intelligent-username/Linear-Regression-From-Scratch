@@ -146,18 +146,32 @@ $$
 Now, equating to 0 (for the minimum):
 
 $$
-\frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0 \\
-\Rightarrow \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0 \\
-\Rightarrow \sum_{i=1}^{n} z_i = \sum_{i=1}^{n} (\beta_0 + \beta_1 x_i + \beta_2 y_i) \\
-\\
+\frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0
+$$
+
+$$
+\Rightarrow \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) = 0
+$$
+
+$$
+\Rightarrow \sum_{i=1}^{n} z_i = \sum_{i=1}^{n} (\beta_0 + \beta_1 x_i + \beta_2 y_i)
+$$
+
+$$
 \Rightarrow \sum_{i=1}^{n} z_i = n\beta_0 + \beta_1\sum_{i=1}^{n} x_i +  \beta_2\sum_{i=1}^{n} y_i
 $$
 
 Similarly, we have:
 
 $$
-\sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) x_i = 0 \\
-\Rightarrow \sum_{i=1}^{n} z_i x_i = \sum_{i=1}^{n} (\beta_0 x_i + \beta_1 x_i^2 + \beta_2 y_i x_i) \\
+\sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) x_i = 0
+$$
+
+$$
+\Rightarrow \sum_{i=1}^{n} z_i x_i = \sum_{i=1}^{n} (\beta_0 x_i + \beta_1 x_i^2 + \beta_2 y_i x_i)
+$$
+
+$$
 \Rightarrow \sum_{i=1}^{n} z_i x_i = \beta_0 \sum_{i=1}^{n} x_i + \beta_1 \sum_{i=1}^{n} x_i^2 + \beta_2 \sum_{i=1}^{n} x_i y_i
 $$
 
