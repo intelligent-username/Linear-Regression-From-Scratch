@@ -122,7 +122,7 @@ with
 
 $$
 \begin{align*}
-\frac{\partial L}{\partial \beta_0} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-1) \\
+\frac{\partial L}{\partial \beta_0} &= \frac{1}{n} \sum_{i=1}^{n} 2 \cdot (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \cdot (-1) \\
 &= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i))
 \end{align*}
 $$
@@ -131,14 +131,14 @@ Similarly,
 
 $$
 \begin{align*}
-\frac{\partial L}{\partial \beta_1} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-x_i) \\
+\frac{\partial L}{\partial \beta_1} &= \frac{1}{n} \sum_{i=1}^{n} 2 \cdot (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \cdot (-x_i) \\
 &= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) x_i
 \end{align*}
 $$
 
 $$
 \begin{align*}
-\frac{\partial L}{\partial \beta_2} &= \frac{1}{n} \sum_{i=1}^{n} 2 \\times (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \\times (-y_i) \\
+\frac{\partial L}{\partial \beta_2} &= \frac{1}{n} \sum_{i=1}^{n} 2 \cdot (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) \cdot (-y_i) \\
 &= \frac{-2}{n} \sum_{i=1}^{n} (z_i - (\beta_0 + \beta_1 x_i + \beta_2 y_i)) y_i
 \end{align*}
 $$
