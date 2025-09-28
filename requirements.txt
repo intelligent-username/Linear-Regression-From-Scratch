@@ -1,1 +1,5 @@
-numpy
+# Runtime dependencies
+numpy>=1.24
+
+# Dev / test (optional; alternatively use `pip install -e .[dev]`)
+pytest>=7

@@ -1,12 +1,29 @@
 # Linear Regression From Scratch
 
-Linear regression fits a straight line to the data points that best predicts an outcome.
+![Cover](img.jpg)
+
+---
+
+## Outline
+
+- [Linear Regression From Scratch](#linear-regression-from-scratch)
+  - [Outline](#outline)
+  - [The Math Behind Linear Regression](#the-math-behind-linear-regression)
+    - [The Simple Idea](#the-simple-idea)
+    - [3D \& Higher Dimensions (The General Case)](#3d--higher-dimensions-the-general-case)
+      - [3-Dimensional Formula](#3-dimensional-formula)
+      - [$n$-dimensional Form](#n-dimensional-form)
+  - [Installation](#installation)
+  - [API](#api)
+  - [License](#license)
 
 ---
 
 ## The Math Behind Linear Regression
 
 ### The Simple Idea
+
+Linear regression fits a straight line to the data points that best predicts an outcome.
 
 Say you have $n$ points $(x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)$ with $n \geq 2$. The goal is to find the line that best "fits" these points. By 'best fit', we mean the line that most accurately predicts a $y$ value from some given $x$ value. This is calculated using a loss function, in this case, I will be using Mean Squared Error (**MSE**). By minimizing error, we maximize accuracy. The sum of squared residuals (errors), our loss function, finds the mean squared error by using the formula:
 
@@ -53,7 +70,7 @@ Where:
 - $x_i$ is the observed value of x at that point
 - $y_i$ is the observed value of y at that point
 
-This is for the case where our points are in 2D.
+This case, where our points are in 2D, is called **Simple Linear Regression**.
 
 There are two more cases to consider in simple linear regression:
 
@@ -212,9 +229,13 @@ $$
 \vec{\beta} = (X^\top X)^{-1} X^\top \vec{y},
 $$
 
-The math and procedure behind this is exactly the same as three (and two) dimensions, just more generalized.
+Now, the points have $m$ features, so each point is of the form $(x_1, x_2, \ldots, x_m, y)$, with $y$ being the feature we want to predict.
 
-To review:
+The math and procedure behind this formula is exactly the same as three (and two) dimensions, just more generalized.
+
+---
+
+To review, when performing linear regression, we:
 
 1) Define a loss function.
 2) Find the gradient of the loss function.
@@ -229,6 +250,8 @@ This method fails when:
 - There is no correlation between the variables (obviously).
 - There are more parameters than points (for example when there are 5 features but only 3 points).
 - The features are linearly dependent (collinear).
+
+(This is because the matrix $\mathbf{X}$ becomes non-invertible, and thus we cannot solve for $\vec{\beta}$ uniquely.)
 
 Conversely, if we have:
 
@@ -247,6 +270,84 @@ However, in practice, there are still some issues.
 
 ---
 
-🚧In progress:
+## Installation
 
-The writeup is done. The only thing that's left is the code.
+Clone this repo:
+
+```powershell
+git clone https://github.com/intelligent-username/Linear-Regression-From-Scratch.git
+```
+
+Install dependencies.
+
+With Pip:
+
+```powershell
+cd Linear-Regression-From-Scratch
+python -m venv .venv
+./.venv/Scripts/Activate.ps1
+pip install -r requirements.txt
+pip install -e .  
+```
+
+With Conda:
+
+```powershell
+conda env create -f environment.yml; 
+conda activate naivelinear
+```
+
+(and
+
+```powershell
+pip install -e
+```
+
+if you want the tests to work)
+
+Install via editable local clone (package name: `naivelinear`):
+
+Run tests (optional):
+
+```powershell
+pytest -q
+```
+
+Basic usage (functional API):
+
+```python
+from naivelinear import linear_regression
+
+points = [
+    (1.0, 2.0, 10.5),  # (x1, x2, y)
+    (2.0, 0.5, 11.2),
+    (3.0, 1.5, 14.0),
+]
+
+params = linear_regression(points)
+print("Parameters (bias first):", params)
+```
+
+Class API:
+
+```python
+from naivelinear import LinearRegressionNaive
+
+model = LinearRegressionNaive().fit(points)
+print(model.params_)
+pred = model.predict([[2.5, 1.0]])
+```
+
+## API
+
+| Object | Description |
+|--------|-------------|
+| `linear_regression(points)` | Returns parameter vector (bias first) using normal equation. |
+| `LinearRegressionNaive` | Estimator with `fit`, `predict`, and simple `mean_squared_error`. |
+| `mean_squared_error(y_true, y_pred)` | Basic MSE metric. |
+
+## License
+
+Distributed under the [MIT License](LICENSE).
+
+---
